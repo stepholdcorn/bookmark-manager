@@ -11,7 +11,11 @@ class BookmarkManager < Sinatra::Base
 	DataMapper.finalize
 	DataMapper.auto_upgrade!
 
+  # this is for outputting information for debugging purposes
+  DataMapper::Logger.new($stdout, :debug)
+
   get '/' do
+    @links = Link.all
     erb :index
   end
 

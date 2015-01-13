@@ -1,4 +1,17 @@
-<head></head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bookmarks</title>
+</head>
+
 <body>
-Test
+  <ul>
+  <%@links.each do |link|%>
+    <li><a href="<%= link.url %>"> <%= link.title %> </a></li>
+  <%end%>
+</ul>
 </body>
+
+</html>
