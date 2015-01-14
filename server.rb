@@ -77,7 +77,15 @@ class BookmarkManager < Sinatra::Base
   delete '/sessions' do
     flash[:notice] = "Goodbye!"
     session[:user_id] = nil
-    redirect to('/')
+    redirect '/'
+  end
+
+  get '/users/reset_password/:token' do
+    erb :'users/reset_password'
+  end
+
+  post '/users/reset_password' do
+    redirect '/sessions/new'
   end
 
   helpers do
