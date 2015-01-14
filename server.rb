@@ -7,19 +7,13 @@ class BookmarkManager < Sinatra::Base
   set :session_secret, 'super secret'
   use Rack::Flash
 
-	env = ENV['RACK_ENV'] || 'development'
-	DataMapper.setup(:default, "postgres://localhost:5432/bookmark_manager_#{env}")
-
 	require './lib/link'
   require './lib/tag'
   require './lib/user'
+  require_relative 'data_mapper_setup'
 
-	DataMapper.finalize
-	DataMapper.auto_upgrade!
-  # DataMapper.auto_migrate!
-
-  # this is for outputting information for debugging purposes
-  DataMapper::Logger.new($stdout, :debug)
+  # this outputs info: debugging purposes
+  # DataMapper::Logger.new($stdout, :debug)
 
   get '/' do
     @links = Link.all
