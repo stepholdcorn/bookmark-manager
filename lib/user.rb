@@ -10,7 +10,7 @@ class User
   validates_confirmation_of :password
 
   property :id, Serial
-  property :email, String
+  property :email, String, unique: true, message: "This email is already taken"
   property :password_digest, Text
 
 
