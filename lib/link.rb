@@ -1,5 +1,4 @@
 class Link
-
 	include DataMapper::Resource
   
   has n, :tags, :through => Resource

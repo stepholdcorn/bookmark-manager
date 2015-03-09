@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'data_mapper'
 require 'rack-flash'
+require 'rest_client'
 
 class BookmarkManager < Sinatra::Base
   enable :sessions
@@ -12,9 +13,6 @@ class BookmarkManager < Sinatra::Base
   require './lib/tag'
   require './lib/user'
   require_relative 'data_mapper_setup'
-
-  # this outputs info: debugging purposes
-  # DataMapper::Logger.new($stdout, :debug)
 
   get '/' do
     @links = Link.all
@@ -62,6 +60,10 @@ class BookmarkManager < Sinatra::Base
     erb :'sessions/new'
   end
 
+  post '/sessions/new' do
+
+  end
+
   post '/sessions' do
     email, password = params[:email], params[:password]
     user = User.authenticate(email, password)
@@ -81,11 +83,21 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/users/reset_password/:token' do
+    erb :'users/change_password'
+  end
+
+  get '/users/reset_password' do
     erb :'users/reset_password'
   end
 
   post '/users/reset_password' do
-    redirect '/sessions/new'
+    @email = params[:email]
+    User.send_password_recovery_email(@email)
+    redirect '/'
+  end
+
+  get '/users/change_password' do
+    erb :'/users/change_password'
   end
 
   helpers do
@@ -94,8 +106,5 @@ class BookmarkManager < Sinatra::Base
     end
   end
     
-  # end
-
-  # start the server if ruby file executed directly
   run! if app_file == $0
 end

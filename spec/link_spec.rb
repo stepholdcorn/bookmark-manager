@@ -1,5 +1,3 @@
-# require 'spec_helper'
-
 describe Link do
 
 	it 'should be created and then retrieved from the db' do

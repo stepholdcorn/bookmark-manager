@@ -28,4 +28,26 @@ class User
   	end
   end
 
+  def self.send_password_recovery_email(email)
+    key = ENV['MAILGUN_API_KEY']
+    domain = "app33255046.mailgun.org"
+    url = "https://api:#{key}@api.mailgun.net/v2/#{domain}"
+
+    RestClient.post url + "/messages",
+    :from => "postmaster@" + domain,
+    :to => email,
+    :subject => "Password Recovery",
+    :text => '/users/reset_password/' + "password_token",
+    :html => 'Hello'
+  end
+
+  private 
+  
+  def create_token(email)
+    user = User.first(:email => email)
+    user.password_token = (1..64).map{('A'..'Z').to_a.sample}.join
+    user.password_token_timestamp = Time.now
+    user.save
+  end
+
 end
